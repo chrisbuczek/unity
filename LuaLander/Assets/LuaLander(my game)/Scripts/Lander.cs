@@ -1,6 +1,6 @@
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class MyLander : MonoBehaviour
 {
@@ -44,15 +44,17 @@ public class MyLander : MonoBehaviour
         //collision2D.gameObject - the object you hit. TryGetComponent - tries to find a component of a specific type. Returns true if component exist, otherwise false.
         //GetComponent returns null instead of false, so less clean.
         // Read about ref, out, in in C#
-        // LandingPad landingPad = collision2D.gameObject.GetComponent<LandingPad>() is the similar as with out parameter below, but requires a null check
+        // LandingPad landingPad = collision2D.gameObject.GetComponent<LandingPad>() is similar to the one with out parameter below, but requires a null check
         // out lets you use landingPad inside if statement, in this method out parameter is required
-        if(collision2D.gameObject.TryGetComponent(out LandingPad landingPad)) {
-            Debug.Log($"LandingPad: {landingPad.gameObject.name}");
+        // NEVER COMPARE WITH OBJECT'S STRING NAME. ADD LANDINGPAD.CS EMPTY CLASS TO IDENTIFY IT 
+        if(!collision2D.gameObject.TryGetComponent(out LandingPad landingPad)) {
+            Debug.Log("Crashed on Terrain!");
         }
 
         //magnitude of vector 2d is just his size. collision2d.relativeVelocity takes x axis and y axis of velocity vector
         float softLandingVelocityMagnitude = 4f;
-        if(collision2D.relativeVelocity.magnitude > softLandingVelocityMagnitude)
+        float relativeVelocityMagintude = collision2D.relativeVelocity.magnitude;
+        if( relativeVelocityMagintude > softLandingVelocityMagnitude)
         {
             //Landed too hard!
             Debug.Log("Landed too hard!");
@@ -74,6 +76,17 @@ public class MyLander : MonoBehaviour
             Debug.Log("Landed on a too steep angle!");
             return;
         }
+
+        Debug.Log("Successful landing!");
+        float maxScoreAmountLandingAngle = 100;
+        float scoreDotVectorMultiplier = 10f;
+        float landingAngleScore = maxScoreAmountLandingAngle - Mathf.Abs(dotVector - 1f) * scoreDotVectorMultiplier * maxScoreAmountLandingAngle;
+
+        float maxScoreAmountLandingSpeed = 100;
+        float landingSpeedScore = (softLandingVelocityMagnitude - relativeVelocityMagintude) * maxScoreAmountLandingSpeed;
+
+        Debug.Log("landingAngleScore: " + landingAngleScore);  
+        Debug.Log("landingSpeedScore: " + landingSpeedScore);  
     }
 }
 
