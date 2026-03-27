@@ -76,6 +76,10 @@ PrefabInstance:
       propertyPath: m_Offset.y
       value: -0.077156305
       objectReference: {fileID: 0}
+    - target: {fileID: 8648303474492794052, guid: 509faa91c204648dc8e82b494dccbad3, type: 3}
+      propertyPath: scoreMultiplier
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 9183656911696581993, guid: 509faa91c204648dc8e82b494dccbad3, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.4
