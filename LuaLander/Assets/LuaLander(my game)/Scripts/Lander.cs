@@ -16,6 +16,12 @@ public class MyLander : MonoBehaviour
         Debug.Log("Start");        
     }
 
+    // private void Update()
+    // {
+        //thrusters are just a visual element, so they shouldn't be placed in main Lander logic.
+    //     leftThruster.SetActive(Keyboard.current.leftArrowKey.isPressed);
+    // }
+
     // this runs on fixed interval regardless of framerate = good for physics 
     private void FixedUpdate()
     {
