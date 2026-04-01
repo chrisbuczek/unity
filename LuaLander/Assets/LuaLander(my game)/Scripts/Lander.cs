@@ -1,9 +1,14 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
-public class MyLander : MonoBehaviour
+public class Lander : MonoBehaviour
 {
+    public event EventHandler OnUpForce;
+    public event EventHandler OnLeftForce;
+    public event EventHandler OnRightForce;
+    public event EventHandler OnBeforeForce;
     private Rigidbody2D landerRigidbody2D;
 
     private void Awake()
@@ -25,6 +30,7 @@ public class MyLander : MonoBehaviour
     // this runs on fixed interval regardless of framerate = good for physics 
     private void FixedUpdate()
     {
+        OnBeforeForce?.Invoke(this, EventArgs.Empty);
         if(Keyboard.current.upArrowKey.isPressed)
         {
             float force = 700f;
@@ -32,16 +38,20 @@ public class MyLander : MonoBehaviour
             // Time.fixedDeltaTime makes super sure we are applying same force on every update. It's not necesary here, but I keep it.
             // You shouldn't use Time.deltaTime inside FixedUpdate, because it defeats the purpose of FixedUpdate.
             landerRigidbody2D.AddForce(force * transform.up * Time.fixedDeltaTime);
+            // ENVOKE THE EVENT. this = the MyLander object raising the event. Any subscriber can cast it back to know which lander tirggered the event.
+            OnUpForce?.Invoke(this, EventArgs.Empty);
         }
         if(Keyboard.current.rightArrowKey.isPressed)
         {
             float turnSpeed = -100f; //never use magic numbers. Always assign a value to variable with proper name.
             landerRigidbody2D.AddTorque(turnSpeed * Time.fixedDeltaTime);
+            OnRightForce?.Invoke(this, EventArgs.Empty);
         }
         if(Keyboard.current.leftArrowKey.isPressed)
         {
             float turnSpeed = +100f;
             landerRigidbody2D.AddTorque(turnSpeed * Time.fixedDeltaTime);
+            OnLeftForce?.Invoke(this, EventArgs.Empty);
         }
     }
 
