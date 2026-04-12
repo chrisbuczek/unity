@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -10,6 +11,7 @@ public class Lander : MonoBehaviour
     public event EventHandler OnRightForce;
     public event EventHandler OnBeforeForce;
     private Rigidbody2D landerRigidbody2D;
+    private float fuelAmount = 10f;  
 
     private void Awake()
     {
@@ -31,14 +33,27 @@ public class Lander : MonoBehaviour
     private void FixedUpdate()
     {
         OnBeforeForce?.Invoke(this, EventArgs.Empty);
+        Debug.Log("FuelAmount: " + fuelAmount);
+
+        if(fuelAmount <= 0f) {
+            return;
+        }
+
         if(Keyboard.current.upArrowKey.isPressed)
         {
-            float force = 700f;
-            // transform.up is object up with local transformations: rotation, position. New Vector2D(0, 1) will give global vector
-            // Time.fixedDeltaTime makes super sure we are applying same force on every update. It's not necesary here, but I keep it.
-            // You shouldn't use Time.deltaTime inside FixedUpdate, because it defeats the purpose of FixedUpdate.
-            landerRigidbody2D.AddForce(force * transform.up * Time.fixedDeltaTime);
-            // ENVOKE THE EVENT. this = the MyLander object raising the event. Any subscriber can cast it back to know which lander tirggered the event.
+            if(Keyboard.current.leftArrowKey.isPressed && Keyboard.current.rightArrowKey.isPressed) {
+                float ultraForce = 1400f;
+                landerRigidbody2D.AddForce(ultraForce * transform.up * Time.fixedDeltaTime);    
+                ConsumeFuel(1.5f);
+            } else {
+                float force = 700f;
+                // transform.up is object up with local transformations: rotation, position. New Vector2D(0, 1) will give global vector
+                // Time.fixedDeltaTime makes super sure we are applying same force on every update. It's not necesary here, but I keep it.
+                // You shouldn't use Time.deltaTime inside FixedUpdate, because it defeats the purpose of FixedUpdate.
+                landerRigidbody2D.AddForce(force * transform.up * Time.fixedDeltaTime);
+                // ENVOKE THE EVENT. this = the MyLander object raising the event. Any subscriber can cast it back to know which lander tirggered the event.
+                ConsumeFuel(1.5f);
+            }
             OnUpForce?.Invoke(this, EventArgs.Empty);
         }
         if(Keyboard.current.rightArrowKey.isPressed)
@@ -46,12 +61,14 @@ public class Lander : MonoBehaviour
             float turnSpeed = -100f; //never use magic numbers. Always assign a value to variable with proper name.
             landerRigidbody2D.AddTorque(turnSpeed * Time.fixedDeltaTime);
             OnRightForce?.Invoke(this, EventArgs.Empty);
+            ConsumeFuel();
         }
         if(Keyboard.current.leftArrowKey.isPressed)
         {
             float turnSpeed = +100f;
             landerRigidbody2D.AddTorque(turnSpeed * Time.fixedDeltaTime);
             OnLeftForce?.Invoke(this, EventArgs.Empty);
+            ConsumeFuel();
         }
     }
 
@@ -106,5 +123,20 @@ public class Lander : MonoBehaviour
 
         int score = Mathf.RoundToInt((landingAngleScore + landingSpeedScore) * landingPad.GetScoreMultiplier());
     }
+
+    private void OnTriggerEnter2D(Collider2D collider2D)
+    {
+        if(collider2D.gameObject.TryGetComponent(out FuelPickup fuelPickup)) {
+        float pickedUpFuel = fuelPickup.GetFuel();
+        fuelAmount += pickedUpFuel;
+        fuelPickup.DestroySelf();
+        }
+
+    }
+
+    private void ConsumeFuel(float fuelConsumptionAmount = 1f) {
+        fuelAmount -= fuelConsumptionAmount * Time.deltaTime;
+    }
 }
+
 
