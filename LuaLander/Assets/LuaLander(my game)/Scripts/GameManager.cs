@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -8,9 +9,18 @@ public class GameManager : MonoBehaviour
     // both of those approaches are correct, because Lander shouldn't work if we deleted GameManager. GameManager is necessary for the game to work.
 
     // Singleton Pattern - when you need to access global reference
+    public static GameManager Instance { get; private set; }
+    // Static fields belong to the class itself, not any instance
+    
 
     // [SerializeField] private Lander lander; - used in Approach 1
     private int score;
+
+    private void Awake()
+    {
+        //runs first, even if the component is disabled. Use it for self-initialization, like getting references 
+        Instance = this;
+    }
 
     private void Start()
     {
@@ -35,5 +45,10 @@ public class GameManager : MonoBehaviour
     {
         score += addScoreAmount;
         Debug.Log(score);
+    }
+
+    public int GetScore()
+    {
+        return score;
     }
 }
