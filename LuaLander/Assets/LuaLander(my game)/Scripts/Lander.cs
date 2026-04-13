@@ -6,20 +6,34 @@ using UnityEngine.UIElements;
 
 public class Lander : MonoBehaviour
 {
+    //singleton pattern
+    // static - property belongs to a class and not to a class instance itself
+    // public get to property, set is private - only this class can change it.
+    public static Lander Instance { get; private set; }
+
     public event EventHandler OnUpForce;
     public event EventHandler OnLeftForce;
     public event EventHandler OnRightForce;
     public event EventHandler OnBeforeForce;
+    public event EventHandler OnCoinPickup;
+    //explain this custom args with generics
+    public event EventHandler<OnLandedEventArgs> OnLanded;
+    public class OnLandedEventArgs: EventArgs {
+        public int score;
+    }
+
     private Rigidbody2D landerRigidbody2D;
     private float fuelAmount = 10f;  
 
     private void Awake()
     {
+        Instance = this;
         landerRigidbody2D = GetComponent<Rigidbody2D>(); //get reference to Rigidbody2D from the same game object
     }
 
     private void Start()
     {
+
         Debug.Log("Start");        
     }
 
@@ -33,7 +47,7 @@ public class Lander : MonoBehaviour
     private void FixedUpdate()
     {
         OnBeforeForce?.Invoke(this, EventArgs.Empty);
-        Debug.Log("FuelAmount: " + fuelAmount);
+        // Debug.Log("FuelAmount: " + fuelAmount);
 
         if(fuelAmount <= 0f) {
             return;
@@ -122,6 +136,9 @@ public class Lander : MonoBehaviour
         Debug.Log("landingSpeedScore: " + landingSpeedScore);  
 
         int score = Mathf.RoundToInt((landingAngleScore + landingSpeedScore) * landingPad.GetScoreMultiplier());
+        OnLanded?.Invoke(this, new OnLandedEventArgs {
+            score = score,
+        });
     }
 
     private void OnTriggerEnter2D(Collider2D collider2D)
@@ -131,7 +148,11 @@ public class Lander : MonoBehaviour
         fuelAmount += pickedUpFuel;
         fuelPickup.DestroySelf();
         }
-
+        
+        if(collider2D.gameObject.TryGetComponent(out CoinPickup coinPickup)) {
+            OnCoinPickup?.Invoke(this, EventArgs.Empty);
+            coinPickup.DestroySelf();
+        }
     }
 
     private void ConsumeFuel(float fuelConsumptionAmount = 1f) {
