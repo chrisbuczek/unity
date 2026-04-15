@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -29,12 +30,6 @@ public class Lander : MonoBehaviour
     {
         Instance = this;
         landerRigidbody2D = GetComponent<Rigidbody2D>(); //get reference to Rigidbody2D from the same game object
-    }
-
-    private void Start()
-    {
-
-        Debug.Log("Start");        
     }
 
     // private void Update()
@@ -157,6 +152,14 @@ public class Lander : MonoBehaviour
 
     private void ConsumeFuel(float fuelConsumptionAmount = 1f) {
         fuelAmount -= fuelConsumptionAmount * Time.deltaTime;
+    }
+
+    public Vector2 GetSpeed() {
+        return landerRigidbody2D.linearVelocity;
+    }
+
+    public float GetFuelAmount() {
+        return fuelAmount;
     }
 }
 
