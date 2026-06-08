@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 41224694396907287}
   - component: {fileID: 6429895499165754415}
   m_Layer: 0
-  m_Name: Level_1
+  m_Name: Level_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93c347075a9dd46cc8f99c8aca455547, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameLevel
-  levelNumber: 1
+  levelNumber: 2
   landerStartPositionTransform: {fileID: 2215562458698434268}
 --- !u!1 &4205247793406097733
 GameObject:
@@ -149,8 +149,8 @@ SpriteShapeRenderer:
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
   m_LocalAABB:
-    m_Center: {x: 11.395292, y: 3.7406693, z: 0}
-    m_Extent: {x: 31.382, y: 10.123226, z: 0}
+    m_Center: {x: 27.250902, y: 15.342255, z: 0}
+    m_Extent: {x: 47.23761, y: 21.724812, z: 0}
   m_SpriteSortPoint: 0
 --- !u!114 &7867309714404792002
 MonoBehaviour:
@@ -199,7 +199,7 @@ MonoBehaviour:
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
-    - position: {x: -8.356977, y: 2.6734562, z: 0}
+    - position: {x: -10.140308, y: 19.997242, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
@@ -207,7 +207,7 @@ MonoBehaviour:
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
-    - position: {x: -3.3389568, y: 2.034648, z: 0}
+    - position: {x: -15.397671, y: 36.76714, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
@@ -215,7 +215,7 @@ MonoBehaviour:
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
-    - position: {x: 2.4664888, y: 1.9948962, z: 0}
+    - position: {x: -7.469213, y: 37.067066, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
@@ -223,7 +223,7 @@ MonoBehaviour:
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
-    - position: {x: 8.478976, y: 7.195215, z: 0}
+    - position: {x: 8.214207, y: 30.449856, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
@@ -247,7 +247,7 @@ MonoBehaviour:
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
-    - position: {x: 26.02854, y: 4.42222, z: 0}
+    - position: {x: 28.76486, y: 33.20421, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
@@ -255,7 +255,7 @@ MonoBehaviour:
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
-    - position: {x: 33.662857, y: -0.5634546, z: 0}
+    - position: {x: 33.717003, y: 26.588913, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
@@ -263,7 +263,39 @@ MonoBehaviour:
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
-    - position: {x: 42.62149, y: -0.40765238, z: 0}
+    - position: {x: 34.068237, y: 2.8822775, z: 0}
+      leftTangent: {x: 0, y: 0, z: 0}
+      rightTangent: {x: 0, y: 0, z: 0}
+      mode: 0
+      height: 1
+      spriteIndex: 0
+      corner: 1
+      m_CornerMode: 1
+    - position: {x: 41.30401, y: 2.9367323, z: 0}
+      leftTangent: {x: 0, y: 0, z: 0}
+      rightTangent: {x: 0, y: 0, z: 0}
+      mode: 0
+      height: 1
+      spriteIndex: 0
+      corner: 1
+      m_CornerMode: 1
+    - position: {x: 46.551754, y: 8.318141, z: 0}
+      leftTangent: {x: 0, y: 0, z: 0}
+      rightTangent: {x: 0, y: 0, z: 0}
+      mode: 0
+      height: 1
+      spriteIndex: 0
+      corner: 1
+      m_CornerMode: 1
+    - position: {x: 65.26862, y: 8.839747, z: 0}
+      leftTangent: {x: 0, y: 0, z: 0}
+      rightTangent: {x: 0, y: 0, z: 0}
+      mode: 0
+      height: 1
+      spriteIndex: 0
+      corner: 1
+      m_CornerMode: 1
+    - position: {x: 74.48851, y: -5.9115934, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
@@ -313,15 +345,19 @@ MonoBehaviour:
   - {x: -18.655428, y: 13.5395355}
   - {x: -14.114378, y: 13.863896}
   - {x: -11.600584, y: 8.836308}
-  - {x: -8.356977, y: 2.6734562}
-  - {x: -3.3389568, y: 2.034648}
-  - {x: 2.4664888, y: 1.9948962}
-  - {x: 8.478976, y: 7.195215}
+  - {x: -10.140308, y: 19.997242}
+  - {x: -15.397671, y: 36.76714}
+  - {x: -7.469213, y: 37.067066}
+  - {x: 8.214207, y: 30.449856}
   - {x: 14.348266, y: 12.809724}
   - {x: 23.42424, y: 13.02583}
-  - {x: 26.02854, y: 4.42222}
-  - {x: 33.662857, y: -0.5634546}
-  - {x: 42.62149, y: -0.40765238}
+  - {x: 28.76486, y: 33.20421}
+  - {x: 33.717003, y: 26.588913}
+  - {x: 34.068237, y: 2.8822775}
+  - {x: 41.30401, y: 2.9367323}
+  - {x: 46.551754, y: 8.318141}
+  - {x: 65.26862, y: 8.839747}
+  - {x: 74.48851, y: -5.9115934}
   - {x: 42.777294, y: -6.1723394}
   - {x: 18.955406, y: -6.382557}
   - {x: -19.986708, y: -6.090212}
@@ -376,15 +412,19 @@ PolygonCollider2D:
       - {x: -18.655428, y: 13.5395355}
       - {x: -14.114378, y: 13.863896}
       - {x: -11.600584, y: 8.836308}
-      - {x: -8.356977, y: 2.6734562}
-      - {x: -3.3389568, y: 2.034648}
-      - {x: 2.4664888, y: 1.9948962}
-      - {x: 8.478976, y: 7.195215}
+      - {x: -10.140308, y: 19.997242}
+      - {x: -15.397671, y: 36.76714}
+      - {x: -7.469213, y: 37.067066}
+      - {x: 8.214207, y: 30.449856}
       - {x: 14.348266, y: 12.809724}
       - {x: 23.42424, y: 13.02583}
-      - {x: 26.02854, y: 4.42222}
-      - {x: 33.662857, y: -0.5634546}
-      - {x: 42.62149, y: -0.40765238}
+      - {x: 28.76486, y: 33.20421}
+      - {x: 33.717003, y: 26.588913}
+      - {x: 34.068237, y: 2.8822775}
+      - {x: 41.30401, y: 2.9367323}
+      - {x: 46.551754, y: 8.318141}
+      - {x: 65.26862, y: 8.839747}
+      - {x: 74.48851, y: -5.9115934}
       - {x: 42.777294, y: -6.1723394}
       - {x: 18.955406, y: -6.382557}
       - {x: -19.986708, y: -6.090212}
@@ -414,7 +454,7 @@ Transform:
   m_GameObject: {fileID: 4936848477790959390}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.42, y: -0.03, z: 0}
+  m_LocalPosition: {x: 19.59, y: 13.34, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -517,11 +557,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8357623863666366104, guid: d3e1930913b5c411e8d9260fafa020dd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 19.281612
+      value: 38.26
       objectReference: {fileID: 0}
     - target: {fileID: 8357623863666366104, guid: d3e1930913b5c411e8d9260fafa020dd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 8.64
+      value: -1.33
       objectReference: {fileID: 0}
     - target: {fileID: 8357623863666366104, guid: d3e1930913b5c411e8d9260fafa020dd, type: 3}
       propertyPath: m_LocalPosition.z
@@ -575,11 +615,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3824687466100658114, guid: 729307362c6de4ecd81acaad50096700, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.84
+      value: 24.7
       objectReference: {fileID: 0}
     - target: {fileID: 3824687466100658114, guid: 729307362c6de4ecd81acaad50096700, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.55
+      value: 21.19
       objectReference: {fileID: 0}
     - target: {fileID: 3824687466100658114, guid: 729307362c6de4ecd81acaad50096700, type: 3}
       propertyPath: m_LocalPosition.z
@@ -645,11 +685,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6109276726064208106, guid: 509faa91c204648dc8e82b494dccbad3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 19.53
       objectReference: {fileID: 0}
     - target: {fileID: 6109276726064208106, guid: 509faa91c204648dc8e82b494dccbad3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.93
+      value: 9.2
       objectReference: {fileID: 0}
     - target: {fileID: 6109276726064208106, guid: 509faa91c204648dc8e82b494dccbad3, type: 3}
       propertyPath: m_LocalPosition.z
@@ -703,11 +743,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 172529536776718961, guid: 999b61e668e2a4c809015d4522549f85, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 15.35
       objectReference: {fileID: 0}
     - target: {fileID: 172529536776718961, guid: 999b61e668e2a4c809015d4522549f85, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.44
+      value: 11.93
       objectReference: {fileID: 0}
     - target: {fileID: 172529536776718961, guid: 999b61e668e2a4c809015d4522549f85, type: 3}
       propertyPath: m_LocalPosition.z
