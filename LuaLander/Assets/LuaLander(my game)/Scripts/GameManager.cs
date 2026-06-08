@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,7 +13,8 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; } // Approach 2 - Singleton Pattern - when you need to access global reference // Static fields belong to the class itself, not any instance
     // [SerializeField] private Lander lander; - used in Approach 1 (listening for events)
 
-    [SerializeField] private int levelNumber;
+    // [SerializeField] private int levelNumber; this will not persist between SceneManager.LoadScene() -> have to make it static
+    private static int levelNumber = 1; //static doesn't belong to any specific object, it belongs to the class itself
     [SerializeField] private List<GameLevel> gameLevelList;
 
     private int score;
@@ -90,6 +92,23 @@ public class GameManager : MonoBehaviour
     public float GetTime()
     {
         return time;
+    }
+
+    public void GoToNextLevel()
+    {
+        levelNumber++;
+        //we only have one scene. Scene 0 has GameManager.cs that tracks current levelNumber;
+        SceneManager.LoadScene(0);
+    }
+
+    public void RetryLevel()
+    {
+        SceneManager.LoadScene(0);
+    }
+
+    public int GetLevelNumber()
+    {
+        return levelNumber;
     }
 }
 

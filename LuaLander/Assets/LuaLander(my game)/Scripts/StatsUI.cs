@@ -57,7 +57,8 @@ public class StatsUI : MonoBehaviour
         // Unity puts a GameManager object in the scene
         // Then GameManager's Awake() runs and assings Instance = this - storing a reference to itself in the static property
         // Now any other script can call GameManager.Instance
-        statsTextMesh.text = GameManager.Instance.GetScore().ToString() + '\n'
+        statsTextMesh.text = GameManager.Instance.GetLevelNumber().ToString() + '\n'
+        + GameManager.Instance.GetScore().ToString() + '\n'
         + Mathf.Round(GameManager.Instance.GetTime()).ToString() + '\n'
         + Mathf.Round(Lander.Instance.GetSpeed().x * 10f) + '\n'
         + Mathf.Round(Lander.Instance.GetSpeed().y * 10f) + '\n'
