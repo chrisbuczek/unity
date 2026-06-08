@@ -1,0 +1,57 @@
+using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
+public class LandedUI : MonoBehaviour
+{
+    [SerializeField] private TextMeshProUGUI titleTextMesh;
+    [SerializeField] private TextMeshProUGUI statsTextMesh;
+    [SerializeField] private Button nextButton;
+
+    private void Awake()
+    {
+        nextButton.onClick.AddListener(() =>
+        {
+            //restart game when user clicks button
+            SceneManager.LoadScene(0);
+        });
+    }
+
+    private void Start()
+    {
+        Lander.Instance.OnLanded += Lander_OnLanded;
+        //don't do Hide() on Awake, because it won't attach a listener to Lander event
+        Hide();
+    }
+
+    private void Lander_OnLanded(object sender, Lander.OnLandedEventArgs e)
+    {
+        if (e.landingType == Lander.LandingType.Success)
+        {
+            titleTextMesh.text = "SUCCESSFUL LANDING!";
+        }
+        else
+        {
+            titleTextMesh.text = "<color=#ff0000>CRASH!</color>";
+        }
+
+        statsTextMesh.text =
+            Mathf.Round(e.landingSpeed) + "\n" +
+            Mathf.Round(e.dotVector) + "\n" +
+            "x" + e.scoreMultiplier + "\n" +
+            e.score;
+
+        Show();
+    }
+
+    private void Show()
+    {
+        gameObject.SetActive(true);
+    }
+
+    private void Hide()
+    {
+        gameObject.SetActive(false);
+    }
+}

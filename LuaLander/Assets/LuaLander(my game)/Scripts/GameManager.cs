@@ -1,17 +1,24 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+
     //How GameManage can get Landers events? there are two approaches here. 
     //1. GameManager listens for events and then calls AddScore();
     //2. With singleton pattern in Lander.cs
     // both of those approaches are correct, because Lander shouldn't work if we deleted GameManager. GameManager is necessary for the game to work.
     public static GameManager Instance { get; private set; } // Approach 2 - Singleton Pattern - when you need to access global reference // Static fields belong to the class itself, not any instance
-
     // [SerializeField] private Lander lander; - used in Approach 1 (listening for events)
+
+    [SerializeField] private int levelNumber;
+    [SerializeField] private List<GameLevel> gameLevelList;
+
     private int score;
     private float time;
+
+    private bool isTimerActive = false;
 
     private void Awake()
     {
@@ -28,11 +35,30 @@ public class GameManager : MonoBehaviour
         // Approach 2. singleton
         Lander.Instance.OnCoinPickup += Lander_OnCoinPickup; //get refernce to the Lander via singleton pattern, access the event declared on that Lander object
         Lander.Instance.OnLanded += Lander_OnLanded;
+        Lander.Instance.OnStateChanged += Lander_OnStateChanged;
+
+        LoadCurrentLevel();
     }
 
     private void Update()
     {
-        time += Time.deltaTime;
+        if (isTimerActive)
+        {
+            time += Time.deltaTime;
+        }
+    }
+
+    private void LoadCurrentLevel()
+    {
+        foreach (GameLevel gameLevel in gameLevelList)
+        {
+            if (gameLevel.GetLevelNumber() == levelNumber)
+            {
+                GameLevel spawnedGameLevel = Instantiate(gameLevel, Vector3.zero, Quaternion.identity);
+                //In the new level we need to spawn the Lander Instance
+                Lander.Instance.transform.position = spawnedGameLevel.GetLanderStartPosition();
+            }
+        }
     }
 
     private void Lander_OnCoinPickup(object sender, System.EventArgs e)
@@ -43,6 +69,11 @@ public class GameManager : MonoBehaviour
     private void Lander_OnLanded(object sender, Lander.OnLandedEventArgs e)
     {
         AddScore(e.score);
+    }
+
+    private void Lander_OnStateChanged(object sender, Lander.OnStateChangedEventArgs e)
+    {
+        isTimerActive = e.state == Lander.State.Normal;
     }
 
     public void AddScore(int addScoreAmount)
