@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -16,6 +17,7 @@ public class GameManager : MonoBehaviour
     // [SerializeField] private int levelNumber; this will not persist between SceneManager.LoadScene() -> have to make it static
     private static int levelNumber = 1; //static doesn't belong to any specific object, it belongs to the class itself
     [SerializeField] private List<GameLevel> gameLevelList;
+    [SerializeField] private CinemachineCamera cinemachineCamera;
 
     private int score;
     private float time;
@@ -59,6 +61,9 @@ public class GameManager : MonoBehaviour
                 GameLevel spawnedGameLevel = Instantiate(gameLevel, Vector3.zero, Quaternion.identity);
                 //In the new level we need to spawn the Lander Instance
                 Lander.Instance.transform.position = spawnedGameLevel.GetLanderStartPosition();
+                cinemachineCamera.Target.TrackingTarget = spawnedGameLevel.GetCameraStartTargetTransform();
+                //In order to set cinemachineCamera zoom we need to create custom class CinemachineCameraZoom2D
+                CinemachineCameraZoom2D.Instance.SetTargetOrthographicSize(spawnedGameLevel.GetZoomedOutOrthographicSize());
             }
         }
     }
@@ -76,6 +81,12 @@ public class GameManager : MonoBehaviour
     private void Lander_OnStateChanged(object sender, Lander.OnStateChangedEventArgs e)
     {
         isTimerActive = e.state == Lander.State.Normal;
+
+        if (e.state == Lander.State.Normal)
+        {
+            cinemachineCamera.Target.TrackingTarget = Lander.Instance.transform;
+            CinemachineCameraZoom2D.Instance.SetNormalOrthographicSize();
+        }
     }
 
     public void AddScore(int addScoreAmount)
@@ -110,6 +121,7 @@ public class GameManager : MonoBehaviour
     {
         return levelNumber;
     }
+
 }
 
 // [SerializeField] is better when:
