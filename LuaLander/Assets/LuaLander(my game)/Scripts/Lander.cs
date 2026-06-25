@@ -80,7 +80,8 @@ public class Lander : MonoBehaviour
         switch (state)
         {
             case State.WaitingToStart:
-                if (Keyboard.current.upArrowKey.isPressed || Keyboard.current.leftArrowKey.isPressed || Keyboard.current.upArrowKey.isPressed)
+                // if (Keyboard.current.upArrowKey.isPressed || Keyboard.current.leftArrowKey.isPressed || Keyboard.current.upArrowKey.isPressed)
+                if (GameInput.Instance.IsUpActionPressed() || GameInput.Instance.IsLeftActionPressed() || GameInput.Instance.IsRightActionPressed())
                 {
                     //pressing any input
                     landerRigidbody2D.gravityScale = GRAVITY_NORMAL;
@@ -93,9 +94,11 @@ public class Lander : MonoBehaviour
                     return;
                 }
 
-                if (Keyboard.current.upArrowKey.isPressed)
+                // if (Keyboard.current.upArrowKey.isPressed)
+                if (GameInput.Instance.IsUpActionPressed())
                 {
-                    if (Keyboard.current.leftArrowKey.isPressed && Keyboard.current.rightArrowKey.isPressed)
+                    // if (Keyboard.current.leftArrowKey.isPressed && Keyboard.current.rightArrowKey.isPressed)
+                    if (GameInput.Instance.IsLeftActionPressed() && GameInput.Instance.IsRightActionPressed())
                     {
                         float ultraForce = 1400f;
                         landerRigidbody2D.AddForce(ultraForce * transform.up * Time.fixedDeltaTime);
@@ -113,14 +116,16 @@ public class Lander : MonoBehaviour
                     }
                     OnUpForce?.Invoke(this, EventArgs.Empty);
                 }
-                if (Keyboard.current.rightArrowKey.isPressed)
+                // if (Keyboard.current.rightArrowKey.isPressed)
+                if (GameInput.Instance.IsRightActionPressed())
                 {
                     float turnSpeed = -100f; //never use magic numbers. Always assign a value to variable with proper name.
                     landerRigidbody2D.AddTorque(turnSpeed * Time.fixedDeltaTime);
                     OnRightForce?.Invoke(this, EventArgs.Empty);
                     ConsumeFuel();
                 }
-                if (Keyboard.current.leftArrowKey.isPressed)
+                // if (Keyboard.current.leftArrowKey.isPressed)
+                if (GameInput.Instance.IsLeftActionPressed())
                 {
                     float turnSpeed = +100f;
                     landerRigidbody2D.AddTorque(turnSpeed * Time.fixedDeltaTime);
