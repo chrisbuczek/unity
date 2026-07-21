@@ -1,9 +1,13 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class GameInput : MonoBehaviour
 {
     public static GameInput Instance { private set; get; }
+
+    public event EventHandler OnMenuButtonPressed;
+
     private InputActions inputActions;
 
     private void Awake()
@@ -17,6 +21,13 @@ public class GameInput : MonoBehaviour
         // No MonoBehaviour in the inheritance chain → no Unity lifecycle methods like Awake, Start, Update.
         // MonoBehaviours can't be instantiated with new - new InputActions() - normal C# class
         inputActions.Enable();
+
+        inputActions.Player.Menu.performed += Menu_performed;
+    }
+
+    private void Menu_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        OnMenuButtonPressed?.Invoke(this, EventArgs.Empty);
     }
 
     public bool IsUpActionPressed()
@@ -31,6 +42,13 @@ public class GameInput : MonoBehaviour
     {
         return inputActions.Player.LanderRight.IsPressed();
     }
+
+    // THIS IS NOT CORRECT WAY. MAKE EVENTHANDLER MENU_PERFORMED INSTEAD
+    // public bool IsPauseActionPressed()
+    // {
+    //     // return inputActions.Player.Pause.IsPressed();
+    //     return inputActions.Player.Menu.WasPerformedThisFrame();
+    // }
 
     private void OnDestroy()
     {

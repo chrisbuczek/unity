@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -16,6 +17,10 @@ public class GameManager : MonoBehaviour
 
     // [SerializeField] private int levelNumber; this will not persist between SceneManager.LoadScene() -> have to make it static
     private static int levelNumber = 1; //static doesn't belong to any specific object, it belongs to the class itself
+
+    public event EventHandler OnGamePaused;
+    public event EventHandler OnGameUnpaused;
+
     [SerializeField] private List<GameLevel> gameLevelList;
     [SerializeField] private CinemachineCamera cinemachineCamera;
 
@@ -41,7 +46,13 @@ public class GameManager : MonoBehaviour
         Lander.Instance.OnLanded += Lander_OnLanded;
         Lander.Instance.OnStateChanged += Lander_OnStateChanged;
 
+        GameInput.Instance.OnMenuButtonPressed += GameInput_OnMenuButtonPressed;
         LoadCurrentLevel();
+    }
+
+    private void GameInput_OnMenuButtonPressed(object sender, System.EventArgs e)
+    {
+        PauseUnpauseGame();
     }
 
     private void Update()
@@ -109,12 +120,15 @@ public class GameManager : MonoBehaviour
     {
         levelNumber++;
         //we only have one scene. Scene 0 has GameManager.cs that tracks current levelNumber;
-        SceneManager.LoadScene(0);
+        // SceneManager.LoadScene(0);
+        SceneLoader.LoadScene(SceneLoader.Scene.GameScene);
     }
 
     public void RetryLevel()
     {
-        SceneManager.LoadScene(0);
+        // 0 is a magic number. We shouldn't use it!
+        // SceneManager.LoadScene(0);
+        SceneLoader.LoadScene(SceneLoader.Scene.GameScene);
     }
 
     public int GetLevelNumber()
@@ -122,6 +136,30 @@ public class GameManager : MonoBehaviour
         return levelNumber;
     }
 
+    public void PauseUnpauseGame()
+    {
+        if (Time.timeScale == 1f)
+        {
+            PauseGame();
+        }
+        else
+        {
+            UnpauseGame();
+        }
+    }
+
+    //this can't be inside PausedUI because it is being setActive to false when unpaused
+    public void PauseGame()
+    {
+        Time.timeScale = 0f;
+        OnGamePaused?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void UnpauseGame()
+    {
+        Time.timeScale = 1f;
+        OnGameUnpaused?.Invoke(this, EventArgs.Empty);
+    }
 }
 
 // [SerializeField] is better when:

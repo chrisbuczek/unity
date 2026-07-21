@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/LuaLander(my game)/Scenes/Default/MainMenuScene.unity
+    guid: 2f51f97c4db8e47469ba490696d80e08
+  - enabled: 1
     path: Assets/LuaLander(my game)/Scenes/Default/GameScene.unity
     guid: 8d627ad15182745d89d8a1cdaf63a837
   - enabled: 0
