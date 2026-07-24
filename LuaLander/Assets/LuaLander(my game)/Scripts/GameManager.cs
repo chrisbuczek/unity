@@ -16,7 +16,14 @@ public class GameManager : MonoBehaviour
     // [SerializeField] private Lander lander; - used in Approach 1 (listening for events)
 
     // [SerializeField] private int levelNumber; this will not persist between SceneManager.LoadScene() -> have to make it static
-    private static int levelNumber = 1; //static doesn't belong to any specific object, it belongs to the class itself
+    private static int levelNumber = 1; //static doesn't belong to any specific object, it belongs to the class itself. It will be accessible in other scenes than GameScene.
+    private static int totalScore = 0; //will persist across scenes (can be acessed in GameOver), even if GameManager is only created in GameScene.
+
+    public static void ResetStaticData()
+    {
+        levelNumber = 1;
+        totalScore = 0;
+    }
 
     public event EventHandler OnGamePaused;
     public event EventHandler OnGameUnpaused;
@@ -65,18 +72,25 @@ public class GameManager : MonoBehaviour
 
     private void LoadCurrentLevel()
     {
+        GameLevel gameLevel = GetGameLevel();
+        GameLevel spawnedGameLevel = Instantiate(gameLevel, Vector3.zero, Quaternion.identity);
+        //In the new level we need to spawn the Lander Instance
+        Lander.Instance.transform.position = spawnedGameLevel.GetLanderStartPosition();
+        cinemachineCamera.Target.TrackingTarget = spawnedGameLevel.GetCameraStartTargetTransform();
+        //In order to set cinemachineCamera zoom we need to create custom class CinemachineCameraZoom2D
+        CinemachineCameraZoom2D.Instance.SetTargetOrthographicSize(spawnedGameLevel.GetZoomedOutOrthographicSize());
+    }
+
+    private GameLevel GetGameLevel()
+    {
         foreach (GameLevel gameLevel in gameLevelList)
         {
             if (gameLevel.GetLevelNumber() == levelNumber)
             {
-                GameLevel spawnedGameLevel = Instantiate(gameLevel, Vector3.zero, Quaternion.identity);
-                //In the new level we need to spawn the Lander Instance
-                Lander.Instance.transform.position = spawnedGameLevel.GetLanderStartPosition();
-                cinemachineCamera.Target.TrackingTarget = spawnedGameLevel.GetCameraStartTargetTransform();
-                //In order to set cinemachineCamera zoom we need to create custom class CinemachineCameraZoom2D
-                CinemachineCameraZoom2D.Instance.SetTargetOrthographicSize(spawnedGameLevel.GetZoomedOutOrthographicSize());
+                return gameLevel;
             }
         }
+        return null;
     }
 
     private void Lander_OnCoinPickup(object sender, System.EventArgs e)
@@ -119,9 +133,19 @@ public class GameManager : MonoBehaviour
     public void GoToNextLevel()
     {
         levelNumber++;
-        //we only have one scene. Scene 0 has GameManager.cs that tracks current levelNumber;
-        // SceneManager.LoadScene(0);
-        SceneLoader.LoadScene(SceneLoader.Scene.GameScene);
+        totalScore += score;
+        if (GetGameLevel() == null)
+        {
+            // no more levels
+            SceneLoader.LoadScene(SceneLoader.Scene.GameOverScene);
+        }
+        else
+        {
+            // we still have some levels left
+            //we only have one scene. Scene 0 has GameManager.cs that tracks current levelNumber;
+            // SceneManager.LoadScene(0);
+            SceneLoader.LoadScene(SceneLoader.Scene.GameScene);
+        }
     }
 
     public void RetryLevel()
@@ -159,6 +183,11 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         OnGameUnpaused?.Invoke(this, EventArgs.Empty);
+    }
+
+    public int GetTotalScore()
+    {
+        return totalScore;
     }
 }
 

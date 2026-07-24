@@ -7,7 +7,8 @@ public class SceneLoader
     {
         //names in enum MUST match scene names inside Unity Editor, otherwise it won't work
         MainMenuScene,
-        GameScene
+        GameScene,
+        GameOverScene
     }
 
     public static void LoadScene(Scene scene)
