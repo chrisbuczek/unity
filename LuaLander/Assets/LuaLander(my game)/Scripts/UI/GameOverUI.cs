@@ -18,6 +18,7 @@ public class GameOverUI : MonoBehaviour
     private void Start()
     {
         scoreTextMesh.text = "TOTAL SCORE: " + GameManager.Instance.GetTotalScore().ToString();
+        mainMenuButton.Select(); //this is needed for gamepad support, one button has to be preselected in the scene
     }
 }
 

@@ -26,7 +26,7 @@ public class LandedUI : MonoBehaviour
     private void Start()
     {
         Lander.Instance.OnLanded += Lander_OnLanded;
-        //don't do Hide() on Awake, because it won't attach a listener to Lander event
+        //don't do Hide() on Awake, because it won't attach a listener to Lander event OnLanded
         Hide();
     }
 
@@ -57,6 +57,8 @@ public class LandedUI : MonoBehaviour
     private void Show()
     {
         gameObject.SetActive(true);
+
+        nextButton.Select();
     }
 
     private void Hide()

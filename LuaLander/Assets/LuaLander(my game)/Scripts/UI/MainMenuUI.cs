@@ -8,6 +8,8 @@ public class MainMenuUI : MonoBehaviour
 
     private void Awake()
     {
+        Time.timeScale = 1f; // if we pause game and from PausedUI we go to MainMenu, the timeScale is 0f when we start game
+
         playButton.onClick.AddListener(() =>
         {
             GameManager.ResetStaticData();
@@ -19,5 +21,11 @@ public class MainMenuUI : MonoBehaviour
             // this won't work in unity editor. Only in build!
             Application.Quit();
         });
+    }
+
+    //preselect button for gamepad (not necessary for pc)
+    private void Start()
+    {
+        playButton.Select();
     }
 }

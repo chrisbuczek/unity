@@ -24,6 +24,7 @@ public class PausedUI : MonoBehaviour
         GameManager.Instance.OnGamePaused += GameManager_OnGamePaused;
         GameManager.Instance.OnGameUnpaused += GameManager_OnGameUnPaused;
 
+
         Hide();
     }
 
@@ -40,6 +41,7 @@ public class PausedUI : MonoBehaviour
     private void Show()
     {
         gameObject.SetActive(true);
+        resumeButton.Select(); //needed  for gamepad support
     }
 
     private void Hide()
