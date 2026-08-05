@@ -5,6 +5,8 @@ public class PausedUI : MonoBehaviour
 {
     [SerializeField] private Button resumeButton;
     [SerializeField] private Button mainMenuButton;
+    [SerializeField] private Button soundVolumeButton;
+    [SerializeField] private Button musicVolumeButton;
 
     private void Awake()
     {
@@ -17,6 +19,16 @@ public class PausedUI : MonoBehaviour
         {
             SceneLoader.LoadScene(SceneLoader.Scene.MainMenuScene);
         });
+
+        soundVolumeButton.onClick.AddListener(() =>
+        {
+            soundButtonLogic();
+        });
+
+        musicVolumeButton.onClick.AddListener(() =>
+        {
+            soundButtonLogic();
+        });
     }
 
     private void Start()
@@ -26,6 +38,11 @@ public class PausedUI : MonoBehaviour
 
 
         Hide();
+    }
+
+    private void soundButtonLogic()
+    {
+
     }
 
     private void GameManager_OnGamePaused(object sender, System.EventArgs e)

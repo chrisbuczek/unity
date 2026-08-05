@@ -1,11 +1,16 @@
+using System;
 using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
+    private int SOUND_VOLUME_MAX = 10;
+    private static int soundVolume = 6;
+
     [SerializeField] private AudioClip fuelPickupAudioClip;
     [SerializeField] private AudioClip coinPickupAudioClip;
     [SerializeField] private AudioClip crashAudioClip;
     [SerializeField] private AudioClip landingSuccessAudioClip;
+
 
     private void Start()
     {
@@ -36,4 +41,11 @@ public class SoundManager : MonoBehaviour
     {
         AudioSource.PlayClipAtPoint(coinPickupAudioClip, Camera.main.transform.position);
     }
+
+    public void ChangeSoundVolume()
+    {
+        soundVolume = (soundVolume + 1) % SOUND_VOLUME_MAX;
+    }
+
+
 }
