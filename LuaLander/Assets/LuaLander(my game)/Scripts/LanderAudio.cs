@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class LanderAudio : MonoBehaviour
@@ -20,8 +21,15 @@ public class LanderAudio : MonoBehaviour
         lander.OnRightForce += Lander_OnRightForce;
         lander.OnLeftForce += Lander_OnLeftForce;
 
+        SoundManager.Instance.OnSoundVolumeChanged += SoundManager_OnSoundVolumeChanged;
+
         // thrusterAudioSource.enabled = false; this will always play from the start, that is why we change to Pause()
         thrusterAudioSource.Pause();
+    }
+
+    private void SoundManager_OnSoundVolumeChanged(object sender, EventArgs e)
+    {
+        thrusterAudioSource.volume = SoundManager.Instance.GetSoundVolumeNormalized();
     }
 
     private void Lander_OnBeforeForce(object sender, System.EventArgs e)

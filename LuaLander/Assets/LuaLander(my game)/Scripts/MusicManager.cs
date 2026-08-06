@@ -1,15 +1,18 @@
+using System;
 using UnityEngine;
 
 public class MusicManager : MonoBehaviour
 {
     public static MusicManager Instance { get; private set; }
 
-    private const int VOLUME_MAX = 5;
+    private const int MUSIC_VOLUME_MAX = 10;
+    private static int musicVolume = 6;
 
     private static float musicTime;
-    private static int volume = VOLUME_MAX; // static so it persists across scenes, same reasoning as musicTime
 
     private AudioSource musicAudioSource;
+
+    public event EventHandler OnMusicVolumeChanged;
 
     private void Awake()
     {
@@ -17,7 +20,6 @@ public class MusicManager : MonoBehaviour
 
         musicAudioSource = GetComponent<AudioSource>();
         musicAudioSource.time = musicTime;
-        ApplyVolume();
     }
 
     private void Update()
@@ -26,25 +28,19 @@ public class MusicManager : MonoBehaviour
         musicTime = musicAudioSource.time;
     }
 
-    public void VolumeUp()
+    public void ChangeMusicVolume()
     {
-        volume = Mathf.Min(volume + 1, VOLUME_MAX);
-        ApplyVolume();
+        musicVolume = (musicVolume + 1) % MUSIC_VOLUME_MAX;
+        musicAudioSource.volume = GetMusicVolumeNormalized();
+        OnMusicVolumeChanged?.Invoke(this, EventArgs.Empty); //we are not using this for now, but might be useful later
     }
 
-    public void VolumeDown()
+    public int GetMusicVolume()
     {
-        volume = Mathf.Max(volume - 1, 0);
-        ApplyVolume();
+        return musicVolume;
     }
-
-    public int GetVolume()
+    public float GetMusicVolumeNormalized()
     {
-        return volume;
-    }
-
-    private void ApplyVolume()
-    {
-        musicAudioSource.volume = (float)volume / VOLUME_MAX;
+        return ((float)musicVolume) / MUSIC_VOLUME_MAX;
     }
 }

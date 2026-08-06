@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
+    public static SoundManager Instance { get; private set; }
+
     private int SOUND_VOLUME_MAX = 10;
     private static int soundVolume = 6;
 
@@ -11,6 +13,12 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClip crashAudioClip;
     [SerializeField] private AudioClip landingSuccessAudioClip;
 
+    public event EventHandler OnSoundVolumeChanged;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Start()
     {
@@ -24,28 +32,37 @@ public class SoundManager : MonoBehaviour
         switch (e.landingType)
         {
             case Lander.LandingType.Success:
-                AudioSource.PlayClipAtPoint(landingSuccessAudioClip, Camera.main.transform.position);
+                AudioSource.PlayClipAtPoint(landingSuccessAudioClip, Camera.main.transform.position, GetSoundVolumeNormalized());
                 break;
             default:
-                AudioSource.PlayClipAtPoint(crashAudioClip, Camera.main.transform.position);
+                AudioSource.PlayClipAtPoint(crashAudioClip, Camera.main.transform.position, GetSoundVolumeNormalized());
                 break;
         }
     }
 
     private void Lander_OnFuelPickup(object sender, System.EventArgs e)
     {
-        AudioSource.PlayClipAtPoint(fuelPickupAudioClip, Camera.main.transform.position);
+        AudioSource.PlayClipAtPoint(fuelPickupAudioClip, Camera.main.transform.position, GetSoundVolumeNormalized());
     }
 
     private void Lander_OnCoinPickup(object sender, System.EventArgs e)
     {
-        AudioSource.PlayClipAtPoint(coinPickupAudioClip, Camera.main.transform.position);
+        AudioSource.PlayClipAtPoint(coinPickupAudioClip, Camera.main.transform.position, GetSoundVolumeNormalized());
     }
 
     public void ChangeSoundVolume()
     {
         soundVolume = (soundVolume + 1) % SOUND_VOLUME_MAX;
+        OnSoundVolumeChanged.Invoke(this, EventArgs.Empty);
     }
 
+    public int GetSoundVolume()
+    {
+        return soundVolume;
+    }
 
+    public float GetSoundVolumeNormalized()
+    {
+        return ((float)soundVolume) / SOUND_VOLUME_MAX;
+    }
 }
