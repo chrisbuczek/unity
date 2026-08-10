@@ -453,7 +453,9 @@ MonoBehaviour:
   resumeButton: {fileID: 245398370}
   mainMenuButton: {fileID: 217884513}
   soundVolumeButton: {fileID: 1555396302}
+  soundVolumeTextMesh: {fileID: 637034589}
   musicVolumeButton: {fileID: 2132726261}
+  musicVolumeTextMesh: {fileID: 594008018}
 --- !u!1 &113784914
 GameObject:
   m_ObjectHideFlags: 0
@@ -3866,6 +3868,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1757245214}
   - component: {fileID: 1757245213}
+  - component: {fileID: 1757245215}
   m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
@@ -3947,6 +3950,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1757245215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1757245212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f3980896072a461b88c69d7fa75def8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Background
+  mainCamera: {fileID: 2113974296}
+  parallaxMultiplier: 0.5
 --- !u!1 &1813333573
 GameObject:
   m_ObjectHideFlags: 0
