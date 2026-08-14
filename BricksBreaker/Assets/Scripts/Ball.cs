@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Ball : MonoBehaviour
 {
@@ -11,6 +12,14 @@ public class Ball : MonoBehaviour
 
     public event EventHandler OnDeathTriggerEntered;
     public event EventHandler<BrickDestroyedEventArgs> OnBrickDestroyed;
+
+    private State state;
+
+    private enum State {
+        WaitingToStart,
+        Normal, 
+        GameOver
+    }
 
     public class BrickDestroyedEventArgs : EventArgs
     {
@@ -26,24 +35,40 @@ public class Ball : MonoBehaviour
     {
         ballRigidBody.linearVelocity = startDirection.normalized * moveSpeed;
         velocityBeforeCollision = ballRigidBody.linearVelocity;
+        state = State.WaitingToStart;
+        ballRigidBody.simulated = false;
     }
 
     private void FixedUpdate()
     {
+        switch(state){
+            case State.Normal:
+                ballRigidBody.simulated = true;
+                break;
+            case State.WaitingToStart | State.GameOver:
+                ballRigidBody.simulated = false;
+                break;
+        }
+
+        if(Keyboard.current.leftArrowKey.isPressed || Keyboard.current.rightArrowKey.isPressed)
+        {
+            state = State.Normal;
+        }
+
         // Runs before the physics step, so this is the velocity the ball hits the wall with.
         velocityBeforeCollision = ballRigidBody.linearVelocity;
+
     }
+
 
     private void OnCollisionEnter2D(Collision2D collider2D) {
         // No contact points means no surface normal to reflect off, so there is nothing to do.
         // Happens with trigger-like overlaps and collisions the solver already pushed apart.
         if (collider2D.contactCount == 0) return;
 
-        // Average the contacts so corners give a sane normal.
-        Vector2 normal = Vector2.zero;
-        for (int i = 0; i < collider2D.contactCount; i++)
-            normal += collider2D.GetContact(i).normal;
-        normal.Normalize();
+        // Use the primary contact normal. Averaging multiple normals at corners produces
+        // a synthetic direction that doesn't align with either surface, breaking reflection.
+        Vector2 normal = collider2D.GetContact(0).normal;
 
         Vector2 incoming = velocityBeforeCollision.normalized;
         Vector2 reflected = Vector2.Reflect(incoming, normal);
@@ -60,6 +85,7 @@ public class Ball : MonoBehaviour
     {
         if(collider2D.gameObject.TryGetComponent(out DeathTriggerZone deathTriggerZone)) {
             OnDeathTriggerEntered.Invoke(this, EventArgs.Empty);
+            state = State.GameOver;
         }       
         
     }
