@@ -8,9 +8,9 @@ public class GameSceneManager : MonoBehaviour
     // Names must match the scene asset names in Build Settings.
     public enum Scenes
     {
-        MainMenu,
+        MainMenuScene,
         GameScene,
-        GameOver
+        GameOverScene
     }
 
     private void Awake()
@@ -21,8 +21,8 @@ public class GameSceneManager : MonoBehaviour
             return;
         }
         Instance = this;
+        //what is this doing?
         DontDestroyOnLoad(gameObject);
-        LoadScene(Scenes.MainMenu);
     }
 
     public void LoadScene(Scenes scene)

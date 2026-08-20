@@ -12,6 +12,7 @@ public class Brick : MonoBehaviour
 
     public void DestroySelf()
     {
+        GetComponentInParent<Level>()?.HandleOnBrickDestroyed();
         Destroy(gameObject);
     }
 }

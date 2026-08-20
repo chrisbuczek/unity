@@ -6,6 +6,7 @@ public class Ball : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 7f;
     [SerializeField] private Vector2 startDirection = new Vector2(1f, 1f); //45 degree angle
+    [SerializeField] private Vector3 startPosition = new Vector3(0, 0, 0);
 
     private Rigidbody2D ballRigidBody;
     private Vector2 velocityBeforeCollision;
@@ -17,9 +18,9 @@ public class Ball : MonoBehaviour
 
     private enum State {
         WaitingToStart,
-        Normal, 
-        GameOver
+        Playing, 
     }
+
 
     public class BrickDestroyedEventArgs : EventArgs
     {
@@ -29,6 +30,7 @@ public class Ball : MonoBehaviour
     private void Awake()
     {
         ballRigidBody = GetComponent<Rigidbody2D>();
+        transform.position = startPosition;
     }
 
     private void Start()
@@ -37,22 +39,36 @@ public class Ball : MonoBehaviour
         velocityBeforeCollision = ballRigidBody.linearVelocity;
         state = State.WaitingToStart;
         ballRigidBody.simulated = false;
+        GameManager.Instance.OnGameStateChanged += GameManager_OnGameStateChanged;
+    }
+
+    private void GameManager_OnGameStateChanged(object sender, GameManager.GameStateChangedEvent e)
+    {
+        if(e.currentGameState == GameManager.GameState.Playing)
+        {
+            state = State.Playing;
+            // Launch once, on the transition. simulated must be true first, because velocity
+            // assigned to a non-simulated body is discarded.
+            ballRigidBody.simulated = true;
+            ballRigidBody.linearVelocity = startDirection.normalized * moveSpeed;
+        }
+        if(e.currentGameState == GameManager.GameState.WaitingToStart) {
+            Reset();
+        }
     }
 
     private void FixedUpdate()
     {
         switch(state){
-            case State.Normal:
+            case State.Playing:
                 ballRigidBody.simulated = true;
                 break;
-            case State.WaitingToStart | State.GameOver:
+            case State.WaitingToStart:
                 ballRigidBody.simulated = false;
+                transform.position = startPosition;
+                ballRigidBody.linearVelocity = Vector2.zero;
+                velocityBeforeCollision = startDirection.normalized * moveSpeed;
                 break;
-        }
-
-        if(Keyboard.current.leftArrowKey.isPressed || Keyboard.current.rightArrowKey.isPressed)
-        {
-            state = State.Normal;
         }
 
         // Runs before the physics step, so this is the velocity the ball hits the wall with.
@@ -85,8 +101,14 @@ public class Ball : MonoBehaviour
     {
         if(collider2D.gameObject.TryGetComponent(out DeathTriggerZone deathTriggerZone)) {
             OnDeathTriggerEntered.Invoke(this, EventArgs.Empty);
-            state = State.GameOver;
+            Reset();
         }       
         
+    }
+
+    public void Reset()
+    {
+        state = State.WaitingToStart;
+        gameObject.transform.position = startPosition;
     }
 }
