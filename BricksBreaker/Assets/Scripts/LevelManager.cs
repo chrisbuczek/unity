@@ -43,15 +43,19 @@ public class LevelManager : MonoBehaviour
         if(currentLevelIndex + 1 >= levelList.Count)
         {
             GameSceneManager.Instance.LoadScene(GameSceneManager.Scenes.GameOverScene);
-        }
+        } else
+        {
         currentLevelIndex++;
-        SpawnCurrentLevel();
+        SpawnCurrentLevel();   
+        }
     }
 
     private void SpawnCurrentLevel()
     {
         if(currentLevel != null) Destroy(currentLevel);
-        OnSpawnCurrentLevel.Invoke(this, EventArgs.Empty);
+        // SceneManager.sceneLoaded is triggered after Awake() but before Start() - OnSceneLoaded() in this file
+        // GameManager subscribes to OnSpawnCurrentLevel in Start(). OnSpawnCurrentLevel has zero subscribers - it's null. That is why we need OnSpawnCurrentLevel?.
+        OnSpawnCurrentLevel?.Invoke(this, EventArgs.Empty);
         currentLevel = Instantiate(levelList[currentLevelIndex]);
     }
 }
